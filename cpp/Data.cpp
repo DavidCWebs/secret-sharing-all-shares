@@ -4,11 +4,6 @@ Data::Data() {}
 
 Data::Data(std::string dataFilePath)
 {
-    // try {
-    //     setShares(dataFilePath);
-    // } catch(std::exception & e) {
-    //     std::cerr << e.what() << std::endl;
-    // }
     setShares(dataFilePath);
     setCombinedShares();
 }
@@ -21,14 +16,6 @@ void Data::setShares(std::string dataFilePath)
         throw std::runtime_error("The input file could not be opened.");
     }
 
-    // try {
-    //     if (!infile) {
-    //         throw std::runtime_error("The input file could not be opened.");
-    //     }
-    // } catch(std::exception & e) {
-    //     std::cerr << e.what() << std::endl;
-    // }
-
     std::string line;
     while (std::getline(infile, line)) {
         shares.push_back(line);
@@ -37,6 +24,7 @@ void Data::setShares(std::string dataFilePath)
 
 void Data::setCombinedShares()
 {
+    // throw std::runtime_error("Whoops!!!!");
     // Loop through shares, convert to int vector
     std::vector<std::vector<int>> intVecs;
     for (std::string& share : shares) {

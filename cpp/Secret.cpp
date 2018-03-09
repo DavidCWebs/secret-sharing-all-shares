@@ -1,40 +1,39 @@
-#include "helpers.hpp"
+#include "Secret.h"
 
-void getUserInput(std::string& secret, int& nShares)
+Secret::Secret() {}
+Secret::Secret(const std::string inputSecret, const int inputNShares)
+    : secret(inputSecret), nShares(inputNShares)
 {
-    std::cout << "Please enter the secret that should be split:" << std::endl;
-    getline(std::cin, secret);
-
-    std::cout << "Enter the number of fragments into which the secret should be split:" << std::endl;
-    std::cin >> nShares;
+    generateShares();
 }
 
-void generateFragments(std::vector<std::vector<int>>& fragmentsVec, const int& nShares, const int& secretLength, const std::string& secret)
+
+void Secret::generateShares()
 {
-    std::vector<int> finalFragment;
+    std::vector<int> finalShare;
     srand(static_cast<unsigned int>(time(0)));
     // Create fragments comprised of random ints 0 > 255
     for (int i = 0; i < nShares - 1; i++) {
-        std::vector<int> currentFragment;
-        for (size_t j = 0; j < secretLength; j++) {
+        std::vector<int> currentShare;
+        for (size_t j = 0; j < secret.length(); j++) {
             int random = rand() % 255;
-            currentFragment.push_back(random);
+            currentShare.push_back(random);
         }
-        fragmentsVec.push_back(currentFragment);
+        sharesVec.push_back(currentShare);
     }
     // xor position by position to build a combined xor of all
-    for (int i = 0; i < secretLength; i++) {
+    for (int i = 0; i < secret.length(); i++) {
         int valAtCurrentPosition;
         // Loop through fragments, so we xor at each position
         for (int j = 0; j < nShares -1; j++) {
             valAtCurrentPosition = (j == 0)
-                ? fragmentsVec[j][i]
-                : fragmentsVec[j][i] ^ valAtCurrentPosition;
+                ? sharesVec[j][i]
+                : sharesVec[j][i] ^ valAtCurrentPosition;
         }
         // finally xor the value of the secret at this position
-        finalFragment.push_back(valAtCurrentPosition ^ int(secret[i]));
+        finalShare.push_back(valAtCurrentPosition ^ int(secret[i]));
     }
-    fragmentsVec.push_back(finalFragment);
+    sharesVec.push_back(finalShare);
 }
 
 /**
@@ -42,7 +41,7 @@ void generateFragments(std::vector<std::vector<int>>& fragmentsVec, const int& n
  * See: https://stackoverflow.com/a/5990913/3590673
  * @param inputString [description]
  */
-std::vector<std::string> stringToHexVector(const std::string& inputString)
+std::vector<std::string> Secret::stringToHexVector(const std::string& inputString)
 {
     std::vector<std::string> resultVec;
     for (size_t i = 0; i < inputString.length(); i++) {
@@ -54,7 +53,7 @@ std::vector<std::string> stringToHexVector(const std::string& inputString)
     return resultVec;
 }
 
-std::string toHexString(const std::string& inputString)
+std::string Secret::toHexString(const std::string& inputString)
 {
     std::string hexString = "";
     for (size_t i = 0; i < inputString.length(); i++) {
@@ -65,7 +64,7 @@ std::string toHexString(const std::string& inputString)
     return hexString;
 }
 
-std::string toHexString(const std::vector<int>& input)
+std::string Secret::toHexString(const std::vector<int>& input)
 {
     std::string hexString = "";
     for (size_t i = 0; i < input.size(); i++) {
@@ -74,4 +73,17 @@ std::string toHexString(const std::vector<int>& input)
         hexString += result.str();
     }
     return hexString;
+}
+
+void Secret::outputShares()
+{
+    std::cout << "Shares" << std::endl;
+    std::cout << std::string(80, '-') << std::endl;
+    for(std::vector<int>& share : sharesVec) {
+        std::cout << toHexString(share) << std::endl;
+    }
+    std::cout << std::string(80, '-') << std::endl;
+
+    // Overload toHexString()
+    std::cout << "Secret, hex encoded plaintext: " << toHexString(secret) << std::endl;
 }
