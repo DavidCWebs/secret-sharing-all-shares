@@ -1,14 +1,14 @@
-#include "Data.h"
+#include "Shares.h"
 
-Data::Data() {}
+Shares::Shares() {}
 
-Data::Data(std::string dataFilePath)
+Shares::Shares(std::string dataFilePath)
 {
     setShares(dataFilePath);
     setCombinedShares();
 }
 
-void Data::setShares(std::string dataFilePath)
+void Shares::setShares(std::string dataFilePath)
 {
     std::ifstream infile(dataFilePath);
 
@@ -22,7 +22,7 @@ void Data::setShares(std::string dataFilePath)
     }
 }
 
-void Data::setCombinedShares()
+void Shares::setCombinedShares()
 {
     // throw std::runtime_error("Whoops!!!!");
     // Loop through shares, convert to int vector
@@ -51,7 +51,7 @@ void Data::setCombinedShares()
     combinedShares = s;
 }
 
-std::vector<int> Data::hexStringToIntVec(std::string& input)
+std::vector<int> Shares::hexStringToIntVec(std::string& input)
 {
     std::vector<int> resultVec;
     int current;
@@ -64,6 +64,12 @@ std::vector<int> Data::hexStringToIntVec(std::string& input)
     return resultVec;
 }
 
-void Data::outputCombinedShares() {
-    std::cout << "Combined Shares: " << combinedShares << std::endl;
+void Shares::outputCombinedShares() {
+    const int pad = 1;
+    std::string outputLine = "|" + std::string(pad, ' ') + combinedShares + std::string(pad, ' ') + "|";
+    std::string vertBound = "+" + std::string((pad * 2) + combinedShares.length(), '-') + "+";
+    std::cout << "The secret represented by the combined shares:" << std::endl;
+    std::cout << vertBound << std::endl;
+    std::cout << outputLine << std::endl;
+    std::cout << vertBound << std::endl;
 }

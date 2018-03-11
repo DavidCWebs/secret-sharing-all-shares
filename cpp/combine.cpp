@@ -1,4 +1,4 @@
-#include "Data.h"
+#include "Shares.h"
 #include <fstream>
 
 int main(int argc, char const *argv[])
@@ -15,8 +15,8 @@ int main(int argc, char const *argv[])
     }
 
     try {
-        Data d(filePath);
-        d.outputCombinedShares();
+        Shares s(filePath);
+        s.outputCombinedShares();
     } catch(std::exception & e) {
         std::cerr << e.what() << std::endl;
         return 1;
