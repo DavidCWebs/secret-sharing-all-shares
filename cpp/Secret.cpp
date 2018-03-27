@@ -88,7 +88,6 @@ void Secret::outputShares()
         << vertBound << "\n";
     }
 
-    // -------------------------------------------------------------------------
     int createParentDirStatus, createBaseDirStatus;
     std::string parentDir = utility::getcwd() + "/shares";
     std::string baseDir = parentDir + "/shares-" + utility::currentTimestamp();
@@ -103,15 +102,6 @@ void Secret::outputShares()
 
 void Secret::writeFile(const int i, const std::string& share, std::string dirPath)
 {
-    // int createSharesDirStatus;
-    // std::string newDir = utility::getcwd() + "/shares";
-    // std::string baseDir = utility::currentTimestamp();
-    // std::string filePath = newDir + "/shares-" + baseDir + "/share-" + std::to_string(i);
-
-    // std::cout << share << std::endl;
-    // std::cout << filePath << std::endl;
-    // createSharesDirStatus = mkdir(newDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    // std::cout << ((createStatus != 0) ? "FAIL" : "SUCCESS") << std::endl;
     std::string path = dirPath + "/share-" + std::to_string(i);
     std::ofstream file;
     file.open(path);
