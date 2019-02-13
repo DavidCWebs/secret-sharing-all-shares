@@ -51,56 +51,6 @@ void Secret::generateShares()
 	sharesVec.push_back(finalShare);
 }
 
-/**
- * [stringToHexVector description]
- * See: https://stackoverflow.com/a/5990913/3590673
- * @param inputString [description]
- */
-std::vector<std::string> Secret::stringToHexVector(const std::string& inputString)
-{
-	std::vector<std::string> resultVec;
-	for (size_t i = 0; i < inputString.length(); i++) {
-		std::ostringstream result;
-		result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << (int)inputString[i];
-		std::cout << result.str() << std::endl;
-		resultVec.push_back(result.str());
-	}
-	return resultVec;
-}
-
-std::string Secret::toHexString(const std::string& inputString)
-{
-	std::string hexString = "";
-	for (size_t i = 0; i < inputString.length(); i++) {
-		std::ostringstream result;
-		result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << (int)inputString[i];
-		hexString += result.str();
-	}
-	return hexString;
-}
-
-std::string Secret::toHexString(const std::vector<int>& input)
-{
-	std::string hexString = "";
-	for (size_t i = 0; i < input.size(); i++) {
-		std::ostringstream result;
-		result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << input[i];
-		hexString += result.str();
-	}
-	return hexString;
-}
-
-std::string Secret::toHexString(const std::vector<unsigned char>& input)
-{
-	std::string hexString = "";
-	for (size_t i = 0; i < input.size(); i++) {
-		std::ostringstream result;
-		result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << (int)input[i];
-		hexString += result.str();
-	}
-	return hexString;
-}
-
 void Secret::outputShares()
 {
 	const int pad = 1;
@@ -108,7 +58,7 @@ void Secret::outputShares()
 	std::cout << "Shares" << vertBound << std::endl;
 	for(std::vector<unsigned char>& share : sharesVec) {
 		std::cout << "|" + std::string(pad, ' ')
-			<< toHexString(share)
+			<< utility::toHexString(share)
 			<< std::string(pad, ' ') + "|"
 			<< vertBound << "\n";
 	}
@@ -120,7 +70,7 @@ void Secret::outputShares()
 	createBaseDirStatus = mkdir(baseDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
 	for (int i = 0; i < sharesVec.size(); i++) {
-		writeFile(i, toHexString(sharesVec[i]), baseDir);
+		writeFile(i, utility::toHexString(sharesVec[i]), baseDir);
 	}
 	std::cout << std::endl;
 }

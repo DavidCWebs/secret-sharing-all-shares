@@ -20,4 +20,7 @@ namespace utility
     std::string getcwd();
     std::string currentTimestamp();
     int generateRandom(unsigned char *buf, size_t length, int printable);
+    std::string toHexString(const std::string& input);
+    std::string toHexString(const std::vector<int>& input);
+    std::string toHexString(const std::vector<unsigned char>& input);
 }

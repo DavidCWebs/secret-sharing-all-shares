@@ -3,10 +3,10 @@
 namespace utility
 {
 	/**
-	* @see https://answers.yahoo.com/question/index?qid=20120103153728AAh2PjZ
-	* @see https://stackoverflow.com/a/145309/3590673
-	* @param cCurrentPath [description]
-	*/
+	 * @see https://answers.yahoo.com/question/index?qid=20120103153728AAh2PjZ
+	 * @see https://stackoverflow.com/a/145309/3590673
+	 * @param cCurrentPath [description]
+	 */
 	std::string getcwd()
 	{
 		const size_t chunkSize = 255;
@@ -47,11 +47,11 @@ namespace utility
 		tm *ltm = localtime(&now);
 		std::stringstream timestamp;
 		timestamp << std::setfill('0') << std::setw(2) << ltm->tm_mday << "-"
-		<< std::setfill('0') << std::setw(2) << ltm->tm_mon + 1 << "-"
-		<< ltm->tm_year + 1900 << ":"
-		<< std::setfill('0') << std::setw(2) << ltm->tm_hour << ":"
-		<< std::setfill('0') << std::setw(2) << ltm->tm_min << ":"
-		<< std::setfill('0') << std::setw(2) << ltm->tm_sec;
+			<< std::setfill('0') << std::setw(2) << ltm->tm_mon + 1 << "-"
+			<< ltm->tm_year + 1900 << ":"
+			<< std::setfill('0') << std::setw(2) << ltm->tm_hour << ":"
+			<< std::setfill('0') << std::setw(2) << ltm->tm_min << ":"
+			<< std::setfill('0') << std::setw(2) << ltm->tm_sec;
 		return timestamp.str().c_str();
 	}
 
@@ -79,4 +79,53 @@ namespace utility
 		}
 		return 0;
 	}
+	/**
+	 * Build a vector of hex strings representing char values from an input string.
+	 * See: https://stackoverflow.com/a/5990913/3590673
+	 */
+	std::vector<std::string> stringToHexVector(const std::string& inputString)
+	{
+		std::vector<std::string> resultVec;
+		for (size_t i = 0; i < inputString.length(); i++) {
+			std::ostringstream result;
+			result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << (int)inputString[i];
+			std::cout << result.str() << std::endl;
+			resultVec.push_back(result.str());
+		}
+		return resultVec;
+	}
+
+	std::string toHexString(const std::string& inputString)
+	{
+		std::string hexString = "";
+		for (size_t i = 0; i < inputString.length(); i++) {
+			std::ostringstream result;
+			result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << (int)inputString[i];
+			hexString += result.str();
+		}
+		return hexString;
+	}
+
+	std::string toHexString(const std::vector<int>& input)
+	{
+		std::string hexString = "";
+		for (size_t i = 0; i < input.size(); i++) {
+			std::ostringstream result;
+			result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << input[i];
+			hexString += result.str();
+		}
+		return hexString;
+	}
+
+	std::string toHexString(const std::vector<unsigned char>& input)
+	{
+		std::string hexString = "";
+		for (size_t i = 0; i < input.size(); i++) {
+			std::ostringstream result;
+			result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << (int)input[i];
+			hexString += result.str();
+		}
+		return hexString;
+	}
+
 }
