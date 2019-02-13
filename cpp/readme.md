@@ -50,7 +50,7 @@ Secret Recovery
 
 The secret is recovered by XORing all shares on a character-by-character basis. 
 
-Taking the above example, the result of 0xAA ^ 0x27 ^ 0x70 ^ 0xB6 ^ 0x2F = (decimal)100 - the ascii representation of the character 'd', which is the first character of the original secret.
+Taking the above example, the result of XORing the first byte of each share is determined by `0xAA ^ 0x27 ^ 0x70 ^ 0xB6 ^ 0x2F = (decimal)100`. This is the ascii representation of the character 'd', which is the first character of the original secret.
 
 References
 ----------
