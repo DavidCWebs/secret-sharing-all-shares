@@ -9,20 +9,26 @@ Secret::Secret(const std::string inputSecret, const int inputNShares)
 }
 
 /**
- * Make a std::vector<std::vector<int>> where each element is a vector of ints,
- * each of which 
+ * Makes a std::vector<std::vector<unsigned char>> of nShares number of elements which are the 
+ * shares of the secret.
+ * 
+ * Each of the first (nShares -1) elements is a vector of random bytes supplied by libgcrypt.
+ * The last element is the result of XORing each random share with the secret on a 
+ * character-by-character basis.
+ *
+ * See: https://en.wikipedia.org/wiki/Secret_sharing#Trivial_secret_sharing
  */
 void Secret::generateShares()
 {
-	std::vector<int> finalShare;
-	srand(static_cast<unsigned int>(time(0)));
+	std::vector<unsigned char> finalShare;
 	
-	// Create fragments comprised of random ints 0 > 255
+	// Create fragments comprised of random bytes 
 	for (int i = 0; i < nShares - 1; i++) {
-		std::vector<int> currentShare;
-		for (size_t j = 0; j < secret.length(); j++) {
-			int random = rand() % 255;
-			currentShare.push_back(random);
+		std::vector<unsigned char> currentShare;
+		unsigned char *buf = new unsigned char[secret.length()];
+		utility::generateRandom(buf, secret.length(), 0);
+		while (*buf++) {
+			currentShare.push_back(*buf);
 		}
 		sharesVec.push_back(currentShare);
 	}
@@ -39,7 +45,7 @@ void Secret::generateShares()
 		}
 	
 		// finally xor the value of the secret at this position
-		finalShare.push_back(valAtCurrentPosition ^ int(secret[i]));
+		finalShare.push_back(valAtCurrentPosition ^ (unsigned char)(secret[i]));
 	}
 	
 	sharesVec.push_back(finalShare);
@@ -84,12 +90,23 @@ std::string Secret::toHexString(const std::vector<int>& input)
 	return hexString;
 }
 
+std::string Secret::toHexString(const std::vector<unsigned char>& input)
+{
+	std::string hexString = "";
+	for (size_t i = 0; i < input.size(); i++) {
+		std::ostringstream result;
+		result << std::setw(2) << std::setfill('0') << std::hex << std::uppercase << (int)input[i];
+		hexString += result.str();
+	}
+	return hexString;
+}
+
 void Secret::outputShares()
 {
 	const int pad = 1;
 	std::string vertBound = "\n+" + std::string((pad * 2) + (secret.length() * 2), '-') + "+";
 	std::cout << "Shares" << vertBound << std::endl;
-	for(std::vector<int>& share : sharesVec) {
+	for(std::vector<unsigned char>& share : sharesVec) {
 		std::cout << "|" + std::string(pad, ' ')
 			<< toHexString(share)
 			<< std::string(pad, ' ') + "|"
