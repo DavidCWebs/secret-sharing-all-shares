@@ -12,9 +12,12 @@
 #include <fstream>
 #include <ctime>
 #include <sstream>
+#include <gcrypt.h>
+#include <ctype.h>
 
 namespace utility
 {
     std::string getcwd();
     std::string currentTimestamp();
+    int generateRandom(unsigned char *buf, size_t length, int printable);
 }

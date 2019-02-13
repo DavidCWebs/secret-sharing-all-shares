@@ -2,24 +2,27 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "utility.hpp"
+#include <stdlib.h>
 
 int main(int argc, char const *argv[])
 {
-    std::string secret;
-    int nShares;
-    std::cout << "Please enter the secret that should be split:" << std::endl;
-    getline(std::cin, secret);
 
-    std::cout << "Enter the number of fragments into which the secret should be split:" << std::endl;
-    std::cin >> nShares;
+	std::string secret;
+	int nShares;
+	std::cout << "Please enter the secret that should be split:" << std::endl;
+	getline(std::cin, secret);
 
-    try {
-        Secret s(secret, nShares);
-        s.outputShares();
-    } catch(std::exception & e) {
-        std::cerr << e.what() << std::endl;
-        return 1;
-    }
+	std::cout << "Enter the number of fragments into which the secret should be split:" << std::endl;
+	std::cin >> nShares;
 
-    return 0;
+	try {
+		Secret s(secret, nShares);
+		s.outputShares();
+	} catch(std::exception &e) {
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
+
+	return 0;
 }
