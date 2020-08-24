@@ -55,14 +55,18 @@ namespace utility
 		return timestamp.str().c_str();
 	}
 
+	/**
+	 * Write a random byte into a buffer.
+	 * Uses libgcrypt as a source of randomness.
+	 */
 	int generateRandom(unsigned char *buf, size_t length, int printable)
 	{
 		const char *version = "1.6.5";
 		const char *outputVersion;
 		if (!(outputVersion = gcry_check_version (version)))
 		{
-			fputs ("libgcrypt version mismatch\n", stderr);
-			exit (2);
+			fputs("libgcrypt version mismatch\n", stderr);
+			exit(2);
 		}
 
 		size_t i = 0;
@@ -79,6 +83,9 @@ namespace utility
 		}
 		return 0;
 	}
+
+	//int randomByteNative(unsigned char *buf, size_t length)
+
 	/**
 	 * Build a vector of hex strings representing char values from an input string.
 	 * See: https://stackoverflow.com/a/5990913/3590673
